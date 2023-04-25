@@ -1,0 +1,9 @@
+.brackets {
+  border-left: 2px solid #000;
+  border-right: 2px solid #000;
+  border-radius: 10px;
+  padding: 0 16px 16px;
+}
+/* .graph-inputs {
+    margin-top: 32px;
+} */
