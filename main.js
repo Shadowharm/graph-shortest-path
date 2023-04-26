@@ -1,7 +1,7 @@
 const verticesNumbersInput = document.getElementById("vertices");
 const graphInputsBlock = document.getElementById("graph-inputs");
-const mainBlock = document.getElementById("main-block")
-// mainBlock.style.visibility = 'hidden'
+const mainBlock = document.getElementById("main-block");
+const floidBtn = document.getElementById("floid-btn");
 let graphInputs;
 let verticesNumbers = 3;
 
@@ -35,13 +35,13 @@ const insertMatrix = () => {
     for (let j = 0; j < verticesNumbers; j++) {
       str += `<div style="flex: 0 0 auto; width: ${
         (1 / verticesNumbers) * 100
-      }%"><input type="text" class="form-control form-control-sm matrix text-center" id="input-${i}-${j}"></div>`;
+      }%"><input type="text" value="${i === j ? 'X' : ''}" class="form-control form-control-sm matrix text-center" id="input-${i}-${j}"></div>`;
     }
   }
   graphInputsBlock.innerHTML = str;
-  
-  matrix = Array.from({ length: verticesNumbers }, () =>
-    Array.from({ length: verticesNumbers }, () => null)
+
+  matrix = Array.from({ length: verticesNumbers }, (_, i) =>
+    Array.from({ length: verticesNumbers }, (_, j) => i === j ? 'X' : null)
   );
 
   graphInputs = document.getElementsByClassName("matrix");
@@ -57,18 +57,17 @@ const insertMatrix = () => {
       );
     }
   }
-}
-insertMatrix()
+};
+insertMatrix();
 
 const updateMatrix = (i, j, value = undefined) => {
-  if (value === undefined) {
+  if (value === undefined || i === j) {
     graphInputs[`input-${i}-${j}`].value = matrix[i][j];
     return;
   }
   graphInputs[`input-${i}-${j}`].value = value;
   matrix[i][j] = value;
 };
-
 
 verticesNumbersInput.addEventListener("input", (e) => {
   const value = +e.target.value;
@@ -79,11 +78,13 @@ verticesNumbersInput.addEventListener("input", (e) => {
     return;
   }
   verticesNumbers = value;
-  // mainBlock.style.visibility = 'visible'
 
-  
-insertMatrix()
+  insertMatrix();
 });
 verticesNumbersInput.addEventListener("change", (e) => {
   e.target.value = verticesNumbers;
 });
+
+floidBtn.addEventListener("click", (e) => {
+  floidAlgorithm(matrix, verticesNumbers)
+})
