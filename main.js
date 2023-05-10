@@ -1,9 +1,11 @@
 const verticesNumbersInput = document.getElementById("vertices");
 const graphInputsBlock = document.getElementById("graph-inputs");
 const mainBlock = document.getElementById("main-block");
-const floidBtn = document.getElementById("floid-btn");
+const floydBtn = document.getElementById("floyd-btn");
 let graphInputs;
 let verticesNumbers = 3;
+
+verticesNumbersInput.value = verticesNumbers
 
 let matrix;
 
@@ -12,8 +14,8 @@ const matrixInputEvent = (i, j) => {
     const value = +e.target.value;
     if (!value || value < 0) {
       if (!value) {
-        updateMatrix(i, j, null);
-        updateMatrix(j, i, null);
+        updateMatrix(i, j, Infinity);
+        updateMatrix(j, i, Infinity);
       }
       return;
     }
@@ -35,14 +37,24 @@ const insertMatrix = () => {
     for (let j = 0; j < verticesNumbers; j++) {
       str += `<div style="flex: 0 0 auto; width: ${
         (1 / verticesNumbers) * 100
-      }%"><input type="text" value="${i === j ? 'X' : ''}" class="form-control form-control-sm matrix text-center" id="input-${i}-${j}"></div>`;
+      }%"><input type="text" value="${i === j ? 'X' : ''}" placeholder="∞" class="form-control form-control-sm matrix text-center" id="input-${i}-${j}"></div>`;
     }
   }
   graphInputsBlock.innerHTML = str;
 
   matrix = Array.from({ length: verticesNumbers }, (_, i) =>
-    Array.from({ length: verticesNumbers }, (_, j) => i === j ? 'X' : null)
+    Array.from({ length: verticesNumbers }, (_, j) => i === j ? 'X' : Infinity)
   );
+  // matrix = [
+  //   ['X', 1, null, null, null, 2, null, 3,],
+  //   [null, 'X', null, null, null, null, null, null],
+  //   [null, null, 'X', null, null, null, null, null,]
+  //   [null, null, null, 'X', null, null, null, null],
+  //   [null, null, null, null, 'X', null, null, null,]
+  //   [null, null, null, null, null, 'X', null, null],
+  //   [null, null, null, null, null, null, 'X', null,]
+  //   [null, null, null, null, null, null, null, 'X'],
+  // ]
 
   graphInputs = document.getElementsByClassName("matrix");
   for (let i = 0; i < verticesNumbers; i++) {
@@ -62,11 +74,11 @@ insertMatrix();
 
 const updateMatrix = (i, j, value = undefined) => {
   if (value === undefined || i === j) {
-    graphInputs[`input-${i}-${j}`].value = matrix[i][j];
+    graphInputs[`input-${i}-${j}`].value = matrix[i][j] === Infinity ? "" : matrix[i][j];
     return;
   }
   graphInputs[`input-${i}-${j}`].value = value;
-  matrix[i][j] = value;
+  matrix[i][j] = value ? value : Infinity;
 };
 
 verticesNumbersInput.addEventListener("input", (e) => {
@@ -85,6 +97,6 @@ verticesNumbersInput.addEventListener("change", (e) => {
   e.target.value = verticesNumbers;
 });
 
-floidBtn.addEventListener("click", (e) => {
-  floidAlgorithm(matrix, verticesNumbers)
+floydBtn.addEventListener("click", (e) => {
+  console.log(floydAlgorithm(matrix, verticesNumbers))
 })
