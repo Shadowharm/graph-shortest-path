@@ -4,6 +4,6 @@
   border-radius: 10px;
   padding: 0 16px 16px;
 }
-/* .graph-inputs {
-    margin-top: 32px;
-} */
+.result {
+  padding: 0;
+}
