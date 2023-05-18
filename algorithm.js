@@ -1,31 +1,39 @@
 function floydAlgorithm(matrix, size) {
-  const result = [...matrix]
-  let path = [...matrix.map(arr => arr.map(() => null))]
-  
+  //* Создаем копию матрицы для сохранения промежуточных результатов
+  const result = matrix;
+  //* Создаем копию матрицы для сохранения информации о пути
+  let path = [...matrix.map((arr) => arr.map(() => null))];
+
+  //* заполняем 2D - массив с путями: проставляем индексы исходных вершин
   for (let x = 0; x < size; x++) {
     for (let y = 0; y < size; y++) {
       if (x === y) {
+        //* Устанавливаем диагональные элементы равными 0, указывая на расстояние до самого себя
         path[x][y] = 0;
-    }
-    else if (matrix[x][y] !== Infinity) {
+      } else if (matrix[x][y] !== Infinity) {
+        //* Устанавливаем элементы пути равными начальной вершине
         path[x][y] = x;
-    }
-    else {
+      } else {
+        //* если нет маршрута из вершины x в yУстанавливаем элементы пути равными -1, указывая на отсутствие прямого пути {
         path[x][y] = -1;
-    }
+      }
     }
   }
+  // * Выполнение алгоритма Флойда-Уоршелла
   for (let i = 0; i < size; i++) {
     for (let x = 0; x < size; x++) {
       for (let y = 0; y < size; y++) {
         if (i !== x && i !== y && x !== y) {
           if (result[i][y] + result[x][i] < result[x][y]) {
-            result[x][y] = result[i][y] + result[x][i]
-            path[x][y] = path[i][y]
+            //* Обновляем матрицу результатов, если найден более короткий путь
+            result[x][y] = result[i][y] + result[x][i];
+            //* Обновляем матрицу путей с новой информацией о пути
+            path[x][y] = path[i][y];
           }
         }
       }
     }
   }
-  return {result, path};
+  //* Возвращаем матрицу результатов и матрицу пути
+  return { result, path };
 }

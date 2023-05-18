@@ -101,8 +101,10 @@ const buildPath = (path, i, j, route) => {
 }
 
 floydBtn.addEventListener("click", (e) => {
-  const {result, path} = floydAlgorithm(matrix, verticesNumbers);
-
+  e.preventDefault()
+  const {result, path} = floydAlgorithm(matrix.map(function (item) {
+    return [...item]
+  }), verticesNumbers);
   //* matrix
   let str = `<h3>Результат</h3>
   <div class="d-flex flex-wrap brackets result" style="width: ${verticesNumbers / 12 * 100}%">`
@@ -151,5 +153,5 @@ floydBtn.addEventListener("click", (e) => {
   str += `</div>`
 
   resultBlock.innerHTML = str;
-
+    resultBlock.scrollIntoView({ behavior: "smooth"})
 });
