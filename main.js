@@ -120,7 +120,7 @@ dijkstraBtn.addEventListener("click", (e) => {
       if (i !== j && weight[j] !== Infinity) {
         str += `<p>Путь из вершины ${i + 1} —> ${j + 1} имеет длину ${
           weight[j]
-        }: ${paths[j].map((number) => number + 1).join(" —> ")}</p>`;
+        }: ${Array.from(new Set(paths[j])).map((number) => number + 1).join(" —> ")}</p>`;
       }
     }
     str += `</div>
